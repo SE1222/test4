@@ -72,8 +72,8 @@
         </div>
     </section>
 
-    <!-- Install SDK -->
-    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/cn/index.js"></script>
+    <!-- 使用国际版本的Coze SDK -->
+    <script src="https://sf-cdn.coze.com/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.19/libs/index.js"></script>
 
     <script>
         let globalChatClient = null;
@@ -88,15 +88,8 @@
                 icon: "E"
             },
             {
-                name: "Niels Bohr",
-                field: "Quantum Physics", 
-                description: "One of the founders of quantum mechanics, pioneer of atomic structure theory.",
-                achievements: ["Atomic Model", "Quantum Theory", "Nobel Prize"],
-                icon: "B"
-            },
-            {
                 name: "Isaac Newton",
-                field: "Classical Mechanics",
+                field: "Classical Physics",
                 description: "Creator of classical mechanics, discoverer of the law of universal gravitation.",
                 achievements: ["Universal Gravitation", "Laws of Motion", "Calculus"],
                 icon: "N"
@@ -140,65 +133,41 @@
                     statusElement.innerHTML = 'Connecting to Coze...';
                 }
 
-                // 使用官方完整配置
+                // 使用国际版本配置
                 globalChatClient = new CozeWebSDK.WebChatClient({
-                    /**
-                     * Agent or app settings
-                     */
                     config: {
                         type: 'bot',
                         bot_id: '7555930197238120483',
                         isIframe: false,
                     },
-                    /**
-                     * The auth property is used to configure the authentication method.
-                     */
                     auth: {
                         type: 'token',
                         token: 'cztei_q2rT4Qpztd1U3kZYo2j5nfsMxXblzoUd64J4WmWgqrICjccEAtwHDvudyoX7of0MV',
                         onRefreshToken: async () => 'cztei_q2rT4Qpztd1U3kZYo2j5nfsMxXblzoUd64J4WmWgqrICjccEAtwHDvudyoX7of0MV'
                     },
-                    /**
-                     * The userInfo parameter is used to set the display of agent user information in the chat box.
-                     */
                     userInfo: {
                         id: 'physics_user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now(),
-                        url: 'https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze/coze-logo.png',
+                        url: 'https://sf-cdn.coze.com/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze/coze-logo.png',
                         nickname: 'Physics Student',
                     },
                     ui: {
-                        /**
-                         * The ui.base parameter is used to add the overall UI effect of the chat window.
-                         */
                         base: {
-                            icon: 'https://lf-coze-web-cdn.coze.cn/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze/chatsdk-logo.png',
+                            icon: 'https://sf-cdn.coze.com/obj/eden-cn/lm-lgvj/ljhwZthlaukjlkulzlp/coze/chatsdk-logo.png',
                             layout: 'pc',
                             lang: 'en',
                             zIndex: 1000
                         },
-                        /**
-                         * Controls whether to display the top title bar and the close button
-                         */
                         header: {
                             isShow: true,
                             isNeedClose: true,
                         },
-                        /**
-                         * Controls whether to display the floating ball at the bottom right corner of the page.
-                         */
                         asstBtn: {
                             isNeed: true
                         },
-                        /**
-                         * The ui.footer parameter is used to add the footer of the chat window.
-                         */
                         footer: {
                             isShow: true,
                             expressionText: 'Powered by Coze AI',
                         },
-                        /**
-                         * Control the UI and basic capabilities of the chat box.
-                         */
                         chatBot: {
                             title: 'Physics AI Assistant',
                             uploadable: true,
@@ -302,24 +271,25 @@
         .nav-container {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 2rem;
         }
 
         .nav-brand h1 {
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #667eea;
+            color: #2d3436;
+            font-size: 1.8rem;
+            font-weight: 700;
         }
 
-        /* Status Indicator */
         .status-indicator {
             padding: 0.5rem 1rem;
-            border-radius: 20px;
+            border-radius: 25px;
             font-size: 0.9rem;
-            font-weight: 500;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .status-connecting {
@@ -345,29 +315,30 @@
         }
 
         .hero h1 {
-            font-size: 3rem;
+            font-size: 3.5rem;
             margin-bottom: 1rem;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .hero p {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin-bottom: 2rem;
             opacity: 0.9;
         }
 
         .instructions {
             background: rgba(255, 255, 255, 0.1);
-            padding: 1.5rem;
-            border-radius: 15px;
             backdrop-filter: blur(10px);
+            padding: 2rem;
+            border-radius: 20px;
             margin: 2rem auto;
             max-width: 600px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .instructions h3 {
             margin-bottom: 1rem;
-            color: #fff;
+            font-size: 1.5rem;
         }
 
         /* Physicists Section */
@@ -385,49 +356,54 @@
 
         .physicists-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            margin-bottom: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .physicist-card {
             background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
             padding: 2rem;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            backdrop-filter: blur(10px);
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
         }
 
         .physicist-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 40px rgba(31, 38, 135, 0.5);
         }
 
         .physicist-icon {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: white;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
+            margin: 0 auto 1.5rem;
+            font-size: 2rem;
             font-weight: bold;
-            margin: 0 auto 1rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .physicist-card h3 {
             color: #2d3436;
             margin-bottom: 0.5rem;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
         }
 
         .field {
-            color: #667eea;
+            color: #6c5ce7;
             font-weight: 600;
             margin-bottom: 1rem;
+            font-size: 1rem;
         }
 
         .description {
@@ -440,10 +416,11 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
+            justify-content: center;
         }
 
         .achievement {
-            background: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             padding: 0.3rem 0.8rem;
             border-radius: 15px;
