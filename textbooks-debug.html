@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textbooks Debug - Physics Legends</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug-info { background: #f0f0f0; padding: 10px; margin: 10px 0; border-radius: 5px; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <h1>Textbooks Debug Page</h1>
+    
+    <div id="debug-output"></div>
+    
+    <script src="textbooks-data.js"></script>
+    <script>
+        const debugOutput = document.getElementById('debug-output');
+        
+        function addDebugInfo(message, type = 'info') {
+            const div = document.createElement('div');
+            div.className = `debug-info ${type}`;
+            div.textContent = message;
+            debugOutput.appendChild(div);
+        }
+        
+        // Test if textbooks-data.js is loaded
+        if (typeof TEXTBOOKS_DATABASE === 'undefined') {
+            addDebugInfo('ERROR: TEXTBOOKS_DATABASE is not loaded!', 'error');
+        } else {
+            addDebugInfo('SUCCESS: TEXTBOOKS_DATABASE is loaded', 'success');
+            addDebugInfo(`Number of textbooks: ${Object.keys(TEXTBOOKS_DATABASE.textbooks).length}`, 'info');
+            
+            // List all textbooks
+            Object.values(TEXTBOOKS_DATABASE.textbooks).forEach((book, index) => {
+                addDebugInfo(`${index + 1}. ${book.title} by ${book.author}`, 'info');
+            });
+        }
+    </script>
+</body>
+</html>

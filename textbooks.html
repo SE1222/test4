@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physics Textbooks - Physics Legends</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="textbooks-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">&#128300; Physics Legends</a>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="textbooks.html" class="nav-link active">Textbooks</a>
+                <a href="#" class="nav-link">Upload</a>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search textbooks...">
+                    <i class="fas fa-search"></i>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="textbooks-hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>&#128218; Physics Textbook Library</h1>
+                <p>Curated collection of classic physics textbooks with online reading and download support</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalBooks">5</span>
+                        <span class="stat-label">Textbooks</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" id="totalDownloads">4.9K</span>
+                        <span class="stat-label">Total Downloads</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">5</span>
+                        <span class="stat-label">Categories</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters and Search -->
+    <section class="filters-section">
+        <div class="container">
+            <div class="filters-container">
+                <div class="filter-group">
+                    <label>Category Filter:</label>
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="Mechanics">Mechanics</option>
+                        <option value="Quantum Mechanics">Quantum Mechanics</option>
+                        <option value="Electromagnetism">Electromagnetism</option>
+                        <option value="Thermodynamics">Thermodynamics</option>
+                        <option value="Relativity">Relativity</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Level:</label>
+                    <select id="levelFilter">
+                        <option value="">All Levels</option>
+                        <option value="Undergraduate">Undergraduate</option>
+                        <option value="Graduate">Graduate</option>
+                        <option value="Advanced">Advanced</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Sort by:</label>
+                    <select id="sortFilter">
+                        <option value="rating">Rating</option>
+                        <option value="downloads">Downloads</option>
+                        <option value="year">Publication Year</option>
+                        <option value="title">Title</option>
+                    </select>
+                </div>
+                <button class="upload-btn" onclick="openUploadModal()">
+                    <i class="fas fa-upload"></i> Upload Textbook
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Textbooks Grid -->
+    <section class="textbooks-section">
+        <div class="container">
+            <div id="textbooksGrid" class="textbooks-grid">
+                <!-- Textbook cards will be generated dynamically by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Upload Modal -->
+    <div id="uploadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-upload"></i> Upload New Textbook</h3>
+                <span class="close" onclick="closeUploadModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="uploadForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="bookTitle">Textbook Title *</label>
+                        <input type="text" id="bookTitle" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookAuthor">Author *</label>
+                        <input type="text" id="bookAuthor" name="author" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookCategory">Category *</label>
+                        <select id="bookCategory" name="category" required>
+                            <option value="">Select Category</option>
+                            <option value="Mechanics">Mechanics</option>
+                            <option value="Quantum Mechanics">Quantum Mechanics</option>
+                            <option value="Electromagnetism">Electromagnetism</option>
+                            <option value="Thermodynamics">Thermodynamics</option>
+                            <option value="Relativity">Relativity</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookLevel">Level *</label>
+                        <select id="bookLevel" name="level" required>
+                            <option value="">Select Level</option>
+                            <option value="Undergraduate">Undergraduate</option>
+                            <option value="Graduate">Graduate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookDescription">Description</label>
+                        <textarea id="bookDescription" name="description" rows="3" placeholder="Brief description of the textbook..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookFile">PDF File *</label>
+                        <input type="file" id="bookFile" name="file" accept=".pdf" required>
+                        <small>支持任意大小的PDF文件，适合大型教材上传</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="bookCover">Cover Image (optional)</label>
+                        <input type="file" id="bookCover" name="cover" accept="image/*">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" onclick="closeUploadModal()">Cancel</button>
+                <button type="submit" form="uploadForm" class="btn-primary">
+                    <i class="fas fa-upload"></i> Upload Textbook
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="textbooks-data.js"></script>
+    <script src="textbooks.js"></script>
+</body>
+</html>

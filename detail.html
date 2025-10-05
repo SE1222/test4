@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Base Details - Physics Legends</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="detail-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">&#128300; Physics Legends</a>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="#search" class="nav-link">Search</a>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search physicists or formulas...">
+                    <div id="searchResults" class="search-results"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Breadcrumb Navigation -->
+            <nav class="breadcrumb">
+                <a href="index.html">Home</a>
+                <span class="breadcrumb-separator">></span>
+                <span id="breadcrumbCategory">Physicists</span>
+                <span class="breadcrumb-separator">></span>
+                <span id="breadcrumbName">Details</span>
+            </nav>
+
+            <!-- Main Content -->
+            <div id="detailContent" class="detail-content">
+                <!-- Content will be dynamically loaded via JavaScript -->
+            </div>
+
+            <!-- Related Content -->
+            <div id="relatedContent" class="related-content">
+                <h3>Related Content</h3>
+                <div class="related-grid">
+                    <!-- Related content will be dynamically loaded via JavaScript -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+    <script src="knowledge-base.js"></script>
+    <script src="detail.js"></script>
+</body>
+</html>

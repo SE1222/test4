@@ -1,0 +1,505 @@
+/* Detail page specific styles */
+.detail-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.breadcrumb a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb-separator {
+    color: #9ca3af;
+}
+
+/* Physicist detail page */
+.physicist-detail {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.physicist-header {
+    display: flex;
+    gap: 2rem;
+    padding: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.physicist-image {
+    flex-shrink: 0;
+}
+
+.physicist-image img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+}
+
+.physicist-info h1 {
+    margin: 0 0 1rem 0;
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.physicist-meta {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.physicist-bio {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    opacity: 0.95;
+}
+
+/* Achievement list */
+.achievements-section,
+.quotes-section,
+.timeline-section,
+.description-section,
+.variables-section,
+.applications-section,
+.examples-section {
+    padding: 2rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.achievements-section:last-child,
+.quotes-section:last-child,
+.timeline-section:last-child,
+.description-section:last-child,
+.variables-section:last-child,
+.applications-section:last-child,
+.examples-section:last-child {
+    border-bottom: none;
+}
+
+.achievements-section h3,
+.quotes-section h3,
+.timeline-section h3,
+.description-section h3,
+.variables-section h3,
+.applications-section h3,
+.examples-section h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    color: #374151;
+    font-size: 1.3rem;
+}
+
+.achievements-list {
+    display: grid;
+    gap: 1rem;
+}
+
+.achievement-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+}
+
+.achievement-item i {
+    color: #fbbf24;
+    margin-top: 0.2rem;
+}
+
+/* Timeline */
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 1rem;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e5e7eb;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 2rem;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -0.5rem;
+    top: 0.5rem;
+    width: 1rem;
+    height: 1rem;
+    background: #667eea;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px #e5e7eb;
+}
+
+.timeline-year {
+    font-weight: 600;
+    color: #667eea;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-content h4 {
+    margin: 0 0 0.5rem 0;
+    color: #374151;
+}
+
+.timeline-content p {
+    margin: 0;
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+.quotes-list {
+    display: grid;
+    gap: 1.5rem;
+}
+
+.quote-item {
+    background: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border-left: 4px solid #667eea;
+    font-style: italic;
+}
+
+.quote-item p {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.quote-item cite {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+/* Formula detail page */
+.formula-detail {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.formula-header {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.formula-display {
+    font-size: 3rem;
+    font-family: 'STIX Two Math', serif;
+    margin-bottom: 1rem;
+    font-weight: 300;
+}
+
+.formula-name {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.formula-meta {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* Variable explanations */
+.variables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.variable-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.variable-symbol {
+    font-family: 'STIX Two Math', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #667eea;
+    min-width: 2rem;
+    text-align: center;
+}
+
+.variable-name {
+    color: #374151;
+}
+
+/* Application examples */
+.applications-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.application-tag {
+    background: #667eea;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.examples-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.example-card {
+    background: #f9fafb;
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.example-title {
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 0.5rem;
+}
+
+.example-description {
+    color: #6b7280;
+    line-height: 1.6;
+}
+
+/* Related content */
+.related-content {
+    margin-top: 3rem;
+}
+
+.related-content h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    color: #374151;
+    font-size: 1.3rem;
+}
+
+.related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.related-card {
+    display: block;
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.related-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.related-card h4 {
+    margin: 0 0 0.5rem 0;
+    color: #374151;
+}
+
+.formula-preview {
+    font-family: 'STIX Two Math', serif;
+    font-size: 1.2rem;
+    color: #667eea;
+    margin-bottom: 0.5rem;
+}
+
+.related-card p {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+/* Search container */
+.search-container {
+    position: relative;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-height: 400px;
+    overflow-y: auto;
+    z-index: 1000;
+    display: none;
+}
+
+.search-result-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.search-result-item:hover {
+    background: #f9fafb;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.result-icon {
+    color: #667eea;
+    font-size: 1.2rem;
+}
+
+.result-title {
+    font-weight: 600;
+    color: #374151;
+}
+
+.result-subtitle {
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.result-description {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-top: 0.25rem;
+}
+
+.no-results {
+    padding: 1rem;
+    text-align: center;
+    color: #6b7280;
+}
+
+.error-message {
+    text-align: center;
+    padding: 3rem;
+    color: #6b7280;
+}
+
+.error-message i {
+    font-size: 3rem;
+    color: #ef4444;
+    margin-bottom: 1rem;
+}
+
+.error-message h3 {
+    margin: 0 0 1rem 0;
+    color: #374151;
+}
+
+.error-message p {
+    margin: 0 0 2rem 0;
+}
+
+.btn-primary {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+    background: #5a67d8;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .physicist-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .physicist-image img {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .physicist-info h1 {
+        font-size: 2rem;
+    }
+    
+    .formula-display {
+        font-size: 2rem;
+    }
+    
+    .variables-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .examples-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .related-grid {
+        grid-template-columns: 1fr;
+    }
+}

@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Textbook Reader - Physics Legends</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="reader-styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Reader Header -->
+    <div class="reader-header">
+        <div class="header-left">
+            <button class="back-btn" onclick="goBack()">
+                <i class="fas fa-arrow-left"></i> Back to Library
+            </button>
+            <div class="book-info">
+                <h2 id="textbookTitle">Loading...</h2>
+                <span id="textbookAuthor">Author</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="reader-controls">
+                <button id="fullscreenBtn">
+                    <i class="fas fa-expand"></i>
+                </button>
+                <button id="downloadBtn">
+                    <i class="fas fa-download"></i> Download
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reader Content -->
+    <div class="reader-container">
+        <!-- Sidebar -->
+        <div class="reader-sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-list"></i> Book Information</h3>
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="book-details">
+                <div class="detail-item">
+                    <strong>Pages:</strong> <span id="textbookPages">-</span>
+                </div>
+                <div class="detail-item">
+                    <strong>Category:</strong> <span id="textbookCategory">-</span>
+                </div>
+                <div class="detail-item">
+                    <strong>Level:</strong> <span id="textbookLevel">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- PDF Viewer -->
+        <div class="pdf-viewer-container">
+            <div class="pdf-toolbar">
+                <div class="toolbar-left">
+                    <button onclick="toggleSidebar()">
+                        <i class="fas fa-bars"></i> Info
+                    </button>
+                    <div class="page-controls">
+                        <button id="prevPage">
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <span class="page-info">
+                            <input type="number" id="pageInput" value="1" min="1">
+                            / <span id="totalPages">-</span>
+                        </span>
+                        <button id="nextPage">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="toolbar-right">
+                    <div class="zoom-controls">
+                        <button id="zoomOut">
+                            <i class="fas fa-search-minus"></i>
+                        </button>
+                        <span id="zoomLevel">100%</span>
+                        <button id="zoomIn">
+                            <i class="fas fa-search-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- PDF Display Area -->
+            <div class="pdf-viewer">
+                <div id="pdfContent" class="pdf-content">
+                    <div class="loading-message">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading PDF...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <div id="errorModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>?? Error</h2>
+                <button class="close" onclick="closeErrorModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="errorMessage">An error occurred while loading the PDF.</p>
+                <div class="error-actions">
+                    <button onclick="retryLoad()" class="btn-primary">Retry</button>
+                    <button onclick="goBackToLibrary()" class="btn-secondary">Back to Library</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="textbooks-data.js"></script>
+    <script>
+        // PDF Reader Implementation
+        class PDFReader {
+            constructor() {
+                this.pdfDoc = null;
+                this.currentPage = 1;
+                this.totalPages = 0;
+                this.scale = 1.0;
+                this.textbookId = null;
+                this.textbook = null;
+                this.init();
+            }
+
+            init() {
+                // Get textbook ID from URL
+                const urlParams = new URLSearchParams(window.location.search);
+                this.textbookId = urlParams.get('id');
+                
+                if (!this.textbookId) {
+                    this.showError('No textbook specified');
+                    return;
+                }
+
+                // Load textbook data
+                this.textbook = TEXTBOOKS_DATABASE.textbooks[this.textbookId];
+                if (!this.textbook) {
+                    this.showError('Textbook not found');
+                    return;
+                }
+
+                this.updateTextbookInfo();
+                this.initEventListeners();
+                this.loadPDF();
+            }
+
+            updateTextbookInfo() {
+                document.getElementById('textbookTitle').textContent = this.textbook.title;
+                document.getElementById('textbookAuthor').textContent = `by ${this.textbook.author}`;
+                document.getElementById('textbookPages').textContent = `${this.textbook.pages} pages`;
+                document.getElementById('textbookCategory').textContent = this.textbook.category;
+                document.getElementById('textbookLevel').textContent = this.textbook.level;
+                document.title = `${this.textbook.title} - Physics Legends`;
+            }
+
+            initEventListeners() {
+                document.getElementById('prevPage').addEventListener('click', () => this.prevPage());
+                document.getElementById('nextPage').addEventListener('click', () => this.nextPage());
+                document.getElementById('pageInput').addEventListener('change', (e) => this.goToPage(parseInt(e.target.value)));
+                document.getElementById('zoomIn').addEventListener('click', () => this.zoomIn());
+                document.getElementById('zoomOut').addEventListener('click', () => this.zoomOut());
+                document.getElementById('downloadBtn').addEventListener('click', () => this.downloadPDF());
+                document.getElementById('fullscreenBtn').addEventListener('click', () => this.toggleFullscreen());
+
+                // Keyboard shortcuts
+                document.addEventListener('keydown', (e) => {
+                    switch(e.key) {
+                        case 'ArrowLeft':
+                            this.prevPage();
+                            break;
+                        case 'ArrowRight':
+                            this.nextPage();
+                            break;
+                        case '+':
+                        case '=':
+                            this.zoomIn();
+                            break;
+                        case '-':
+                            this.zoomOut();
+                            break;
+                    }
+                });
+            }
+
+            async loadPDF() {
+                try {
+                    // For demo purposes, we'll show a message about PDF loading
+                    // In a real implementation, you would load the actual PDF file
+                    this.showPDFNotAvailable();
+                } catch (error) {
+                    this.showError('Failed to load PDF: ' + error.message);
+                }
+            }
+
+            showPDFNotAvailable() {
+                const content = document.getElementById('pdfContent');
+                content.innerHTML = `
+                    <div class="pdf-not-available">
+                        <div class="pdf-placeholder">
+                            <i class="fas fa-file-pdf" style="font-size: 4rem; color: #dc2626; margin-bottom: 1rem;"></i>
+                            <h3>${this.textbook.title}</h3>
+                            <p style="color: #6b7280; margin-bottom: 2rem;">by ${this.textbook.author}</p>
+                            <div class="pdf-info" style="background: #f9fafb; padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 2rem;">
+                                <p><strong>Category:</strong> ${this.textbook.category}</p>
+                                <p><strong>Level:</strong> ${this.textbook.level}</p>
+                                <p><strong>Pages:</strong> ${this.textbook.pages}</p>
+                                <p><strong>Language:</strong> ${this.textbook.language}</p>
+                                <p><strong>Rating:</strong> ${this.textbook.rating}/5.0</p>
+                            </div>
+                            <div class="pdf-description" style="margin-bottom: 2rem;">
+                                <h4>Description</h4>
+                                <p style="color: #374151; line-height: 1.6;">${this.textbook.description}</p>
+                            </div>
+                            <div class="pdf-notice" style="background: #fef3c7; padding: 1.5rem; border-radius: 0.5rem; border-left: 4px solid #f59e0b;">
+                                <h4>? Notice</h4>
+                                <p style="margin-bottom: 1rem;">This is a demo version. In a production environment, the actual PDF would be loaded here using PDF.js library.</p>
+                                <p style="margin-bottom: 1rem;">The PDF file path is: <code style="background: #f3f4f6; padding: 0.25rem 0.5rem; border-radius: 0.25rem;">${this.textbook.pdfPath}</code></p>
+                                <button onclick="window.open('${this.textbook.pdfPath}', '_blank')" class="btn-primary" style="background: #667eea; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 0.5rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem;">
+                                    <i class="fas fa-external-link-alt"></i> Try to Open PDF
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Update page info
+                document.getElementById('totalPages').textContent = this.textbook.pages;
+                document.getElementById('pageInput').max = this.textbook.pages;
+                this.totalPages = this.textbook.pages;
+            }
+
+            prevPage() {
+                if (this.currentPage > 1) {
+                    this.currentPage--;
+                    this.updatePageInfo();
+                }
+            }
+
+            nextPage() {
+                if (this.currentPage < this.totalPages) {
+                    this.currentPage++;
+                    this.updatePageInfo();
+                }
+            }
+
+            goToPage(pageNum) {
+                if (pageNum >= 1 && pageNum <= this.totalPages) {
+                    this.currentPage = pageNum;
+                    this.updatePageInfo();
+                }
+            }
+
+            updatePageInfo() {
+                document.getElementById('pageInput').value = this.currentPage;
+                // Enable/disable navigation buttons
+                document.getElementById('prevPage').disabled = this.currentPage <= 1;
+                document.getElementById('nextPage').disabled = this.currentPage >= this.totalPages;
+            }
+
+            zoomIn() {
+                this.scale = Math.min(this.scale * 1.2, 3.0);
+                this.updateZoom();
+            }
+
+            zoomOut() {
+                this.scale = Math.max(this.scale / 1.2, 0.5);
+                this.updateZoom();
+            }
+
+            updateZoom() {
+                document.getElementById('zoomLevel').textContent = Math.round(this.scale * 100) + '%';
+                // Apply zoom to PDF content
+                const content = document.getElementById('pdfContent');
+                content.style.transform = `scale(${this.scale})`;
+                content.style.transformOrigin = 'top center';
+            }
+
+            downloadPDF() {
+                // In a real implementation, this would trigger the PDF download
+                alert('Download functionality would be implemented here.\nPDF Path: ' + this.textbook.pdfPath);
+            }
+
+            toggleFullscreen() {
+                if (!document.fullscreenElement) {
+                    document.documentElement.requestFullscreen();
+                } else {
+                    document.exitFullscreen();
+                }
+            }
+
+            showError(message) {
+                document.getElementById('errorMessage').textContent = message;
+                document.getElementById('errorModal').style.display = 'block';
+            }
+        }
+
+        // Global functions
+        function goToPage(pageNum) {
+            if (window.pdfReader) {
+                window.pdfReader.goToPage(pageNum);
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('hidden');
+        }
+
+        function goBack() {
+            window.location.href = 'textbooks.html';
+        }
+
+        function closeErrorModal() {
+            document.getElementById('errorModal').style.display = 'none';
+        }
+
+        function retryLoad() {
+            closeErrorModal();
+            if (window.pdfReader) {
+                window.pdfReader.loadPDF();
+            }
+        }
+
+        function goBackToLibrary() {
+            window.location.href = 'textbooks.html';
+        }
+
+        // Initialize PDF Reader when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.pdfReader = new PDFReader();
+        });
+    </script>
+
+    <style>
+        .pdf-not-available {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 60vh;
+            padding: 2rem;
+        }
+
+        .pdf-placeholder {
+            text-align: center;
+            max-width: 600px;
+            background: white;
+            padding: 3rem;
+            border-radius: 1rem;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .pdf-placeholder h3 {
+            font-size: 1.5rem;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .pdf-placeholder .pdf-info p {
+            margin: 0.5rem 0;
+            color: #374151;
+        }
+
+        .pdf-placeholder .pdf-description h4 {
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .pdf-placeholder .pdf-notice h4 {
+            color: #92400e;
+            margin-bottom: 1rem;
+        }
+
+        .book-details {
+            padding: 1rem;
+        }
+
+        .detail-item {
+            margin-bottom: 0.75rem;
+            color: #374151;
+        }
+
+        .detail-item strong {
+            color: #1f2937;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 0;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: #dc2626;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .error-actions {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-primary, .btn-secondary {
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+
+        .close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #6b7280;
+        }
+    </style>
+</body>
+</html>

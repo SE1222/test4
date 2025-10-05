@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legendary Physicists - Pioneers of Science</title>
+    <title>Physics Legends - Explore the Greatest Minds in Physics</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=STIX+Two+Math&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
@@ -14,34 +13,36 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <i class="fas fa-atom"></i>
-                <span>Physics Legends</span>
+                <a href="index.html">&#128300; Physics Legends</a>
             </div>
-            <ul class="nav-menu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#physicists">Physicists</a></li>
-                <li><a href="#timeline">Timeline</a></li>
-                <li><a href="#discoveries">Discoveries</a></li>
-                <li><a href="#about">About</a></li>
-            </ul>
-            <div class="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link active">Home</a>
+                <a href="textbooks.html" class="nav-link">Textbooks</a>
+                <a href="#" class="nav-link">Upload</a>
+                <div class="search-container">
+                    <input type="text" id="searchInput" placeholder="Search physicists...">
+                    <div id="searchResults" class="search-results"></div>
+                </div>
             </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1>Legendary Physicists</h1>
-                <p>Discover the brilliant minds who revolutionized our understanding of the universe</p>
-                <a href="#physicists" class="cta-button">
-                    <span>Explore Scientists</span>
-                    <i class="fas fa-arrow-right"></i>
-                </a>
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Explore the Greatest Minds in Physics</h1>
+                <p>Discover the brilliant scientists who shaped our understanding of the universe, from classical mechanics to quantum theory.</p>
+                <div class="hero-buttons">
+                    <a href="#physicists" class="btn-primary">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>Explore Scientists</span>
+                    </a>
+                    <a href="textbooks.html" class="btn-secondary">
+                        <i class="fas fa-book-open"></i>
+                        <span>Browse Textbooks</span>
+                    </a>
+                </div>
             </div>
             <div class="hero-visual">
                 <div class="physics-animation">
@@ -60,8 +61,29 @@
                 </div>
             </div>
         </div>
-        <div class="scroll-indicator">
-            <div class="scroll-arrow"></div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" data-target="6">0</div>
+                    <div class="stat-label">Great Physicists</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="15">0</div>
+                    <div class="stat-label">Famous Formulas</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="500">0</div>
+                    <div class="stat-label">Years of Discovery</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" data-target="100">0</div>
+                    <div class="stat-label">Nobel Prizes</div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -69,8 +91,8 @@
     <section id="physicists" class="physicists-section">
         <div class="container">
             <div class="section-header">
-                <h2>Great Physicists</h2>
-                <p>Meet the visionaries who shaped modern physics</p>
+                <h2>Legendary Physicists</h2>
+                <p>Meet the brilliant minds who revolutionized our understanding of the physical world</p>
             </div>
             
             <div class="physicists-grid">
@@ -79,13 +101,13 @@
                     <div class="card-image">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Einstein_1921_by_F_Schmutzer_-_restoration.jpg/800px-Einstein_1921_by_F_Schmutzer_-_restoration.jpg" alt="Albert Einstein">
                         <div class="card-overlay">
-                            <div class="field-tag">Relativity</div>
+                            <div class="field-tag">Theoretical Physics</div>
                         </div>
                     </div>
                     <div class="card-content">
                         <h3>Albert Einstein</h3>
                         <span class="years">1879 - 1955</span>
-                        <p>Developed the theory of relativity, fundamentally changing our understanding of space, time, and gravity.</p>
+                        <p>Developed the theory of relativity and made fundamental contributions to quantum mechanics and cosmology.</p>
                         <div class="achievements">
                             <span class="achievement">E=mc?</span>
                             <span class="achievement">Nobel Prize 1921</span>
@@ -96,7 +118,7 @@
                 <!-- Newton -->
                 <div class="physicist-card" data-field="mechanics">
                     <div class="card-image">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Sir_Isaac_Newton_%281643-1727%29.jpg/800px-Sir_Isaac_Newton_%281643-1727%29.jpg" alt="Isaac Newton">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/GodfreyKneller-IsaacNewton-1689.jpg/800px-GodfreyKneller-IsaacNewton-1689.jpg" alt="Isaac Newton">
                         <div class="card-overlay">
                             <div class="field-tag">Classical Mechanics</div>
                         </div>
@@ -107,7 +129,7 @@
                         <p>Formulated the laws of motion and universal gravitation, laying the foundation for classical mechanics.</p>
                         <div class="achievements">
                             <span class="achievement">Laws of Motion</span>
-                            <span class="achievement">Principia</span>
+                            <span class="achievement">Principia Mathematica</span>
                         </div>
                     </div>
                 </div>
@@ -115,7 +137,7 @@
                 <!-- Curie -->
                 <div class="physicist-card" data-field="radioactivity">
                     <div class="card-image">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Marie_Curie_c1920.jpg/800px-Marie_Curie_c1920.jpg" alt="Marie Curie">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Marie_Curie_c._1920s.jpg/800px-Marie_Curie_c._1920s.jpg" alt="Marie Curie">
                         <div class="card-overlay">
                             <div class="field-tag">Radioactivity</div>
                         </div>
@@ -196,18 +218,16 @@
         <div class="container">
             <div class="section-header">
                 <h2>Physics Timeline</h2>
-                <p>Major discoveries that changed our world</p>
+                <p>Key discoveries that shaped our understanding of the universe</p>
             </div>
-            
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="timeline-year">1687</div>
                     <div class="timeline-content">
                         <h3>Newton's Principia</h3>
-                        <p>Isaac Newton publishes "Mathematical Principles of Natural Philosophy", establishing classical mechanics.</p>
+                        <p>Isaac Newton publishes Principia Mathematica, establishing the laws of motion and universal gravitation.</p>
                     </div>
                 </div>
-                
                 <div class="timeline-item">
                     <div class="timeline-year">1905</div>
                     <div class="timeline-content">
@@ -215,20 +235,18 @@
                         <p>Albert Einstein publishes papers on special relativity, photoelectric effect, and Brownian motion.</p>
                     </div>
                 </div>
-                
                 <div class="timeline-item">
-                    <div class="timeline-year">1925</div>
+                    <div class="timeline-year">1926</div>
                     <div class="timeline-content">
                         <h3>Quantum Mechanics</h3>
-                        <p>Heisenberg, Schr?dinger, and others develop quantum mechanics, revolutionizing atomic physics.</p>
+                        <p>Schr?dinger develops wave mechanics, providing a mathematical foundation for quantum theory.</p>
                     </div>
                 </div>
-                
                 <div class="timeline-item">
-                    <div class="timeline-year">1969</div>
+                    <div class="timeline-year">1948</div>
                     <div class="timeline-content">
-                        <h3>Standard Model</h3>
-                        <p>Development of the Standard Model of particle physics, describing fundamental particles and forces.</p>
+                        <h3>Quantum Electrodynamics</h3>
+                        <p>Feynman, Schwinger, and Tomonaga develop QED, unifying quantum mechanics and electromagnetism.</p>
                     </div>
                 </div>
             </div>
@@ -239,113 +257,76 @@
     <section id="discoveries" class="discoveries-section">
         <div class="container">
             <div class="section-header">
-                <h2>Revolutionary Discoveries</h2>
-                <p>Breakthroughs that transformed science</p>
+                <h2>Famous Discoveries</h2>
+                <p>Groundbreaking findings that revolutionized physics</p>
             </div>
-            
             <div class="discoveries-grid">
-                <div class="discovery-card">
-                    <div class="discovery-icon">
-                        <i class="fas fa-lightbulb"></i>
-                    </div>
-                    <h3>Theory of Relativity</h3>
-                    <p>Einstein's revolutionary theory that space and time are interwoven and relative to the observer's motion.</p>
-                </div>
-                
                 <div class="discovery-card">
                     <div class="discovery-icon">
                         <i class="fas fa-atom"></i>
                     </div>
-                    <h3>Quantum Mechanics</h3>
-                    <p>The fundamental theory describing the behavior of matter and energy at the atomic and subatomic level.</p>
+                    <h3>Atomic Structure</h3>
+                    <p>Discovery of the atomic nucleus by Rutherford and the development of atomic models.</p>
+                    <span class="discovery-year">1911</span>
                 </div>
-                
                 <div class="discovery-card">
                     <div class="discovery-icon">
                         <i class="fas fa-radiation"></i>
                     </div>
                     <h3>Radioactivity</h3>
-                    <p>Marie Curie's discovery of radioactive elements, opening new fields in nuclear physics and medicine.</p>
+                    <p>Marie and Pierre Curie's pioneering research on radioactive elements and their properties.</p>
+                    <span class="discovery-year">1898</span>
                 </div>
-                
                 <div class="discovery-card">
                     <div class="discovery-icon">
-                        <i class="fas fa-bolt"></i>
+                        <i class="fas fa-wave-square"></i>
                     </div>
-                    <h3>Electromagnetic Induction</h3>
-                    <p>Faraday's discovery that changing magnetic fields can induce electric currents, basis of modern electricity.</p>
+                    <h3>Electromagnetic Waves</h3>
+                    <p>Maxwell's equations predicting electromagnetic waves, confirmed by Hertz's experiments.</p>
+                    <span class="discovery-year">1886</span>
+                </div>
+                <div class="discovery-card">
+                    <div class="discovery-icon">
+                        <i class="fas fa-black-hole"></i>
                     </div>
+                    <h3>Black Holes</h3>
+                    <p>Theoretical prediction and eventual observation of these extreme gravitational objects.</p>
+                    <span class="discovery-year">1916</span>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- About Section -->
-    <section id="about" class="about-section">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-text">
-                    <h2>About Physics Legends</h2>
-                    <p>This website celebrates the extraordinary minds who have shaped our understanding of the physical world. From Newton's laws to Einstein's relativity, from Curie's radioactivity to Hawking's black holes, these scientists have pushed the boundaries of human knowledge.</p>
-                    <p>Their discoveries not only advanced science but also transformed technology, medicine, and our daily lives. We honor their legacy and inspire future generations to continue exploring the mysteries of the universe.</p>
-                    <p><strong>? AI Physics Assistant:</strong> Have questions about physics? Click the chat button in the bottom right corner to talk with our AI assistant about any physics topic, from basic concepts to advanced theories!</p>
-                    <div class="stats">
-                        <div class="stat">
-                            <span class="stat-number">6</span>
-                            <span class="stat-label">Featured Physicists</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">400+</span>
-                            <span class="stat-label">Years of Discovery</span>
-                        </div>
-                        <div class="stat">
-                            <span class="stat-number">¡Þ</span>
-                            <span class="stat-label">Impact on Humanity</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="about-visual">
-                    <div class="physics-equations">
-                        <div class="equation">E = mc?</div>
-                        <div class="equation">F = ma</div>
-                        <div class="equation">¦× = Ae^(ikx)</div>
-                        <div class="equation">? ¡Á B = ¦Ì?J</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+
 
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <div class="footer-logo">
-                        <i class="fas fa-atom"></i>
-                        <span>Physics Legends</span>
-                    </div>
-                    <p>Celebrating the greatest minds in physics and their contributions to human knowledge.</p>
+                    <h3>Physics Legends</h3>
+                    <p>Exploring the greatest minds in physics and their contributions to our understanding of the universe.</p>
                 </div>
                 <div class="footer-section">
-                    <h3>Quick Links</h3>
+                    <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="#home">Home</a></li>
                         <li><a href="#physicists">Physicists</a></li>
                         <li><a href="#timeline">Timeline</a></li>
                         <li><a href="#discoveries">Discoveries</a></li>
+                        <li><a href="textbooks.html">Textbooks</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h3>Resources</h3>
+                    <h4>Resources</h4>
                     <ul>
-                        <li><a href="#">Nobel Prize Physics</a></li>
-                        <li><a href="#">Physics Journals</a></li>
                         <li><a href="#">Educational Materials</a></li>
                         <li><a href="#">Research Papers</a></li>
+                        <li><a href="#">Interactive Simulations</a></li>
+                        <li><a href="#">Video Lectures</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h3>Connect</h3>
+                    <h4>Connect</h4>
                     <div class="social-links">
                         <a href="#"><i class="fab fa-twitter"></i></a>
                         <a href="#"><i class="fab fa-facebook"></i></a>
@@ -355,35 +336,25 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Physics Legends. Created for educational purposes.</p>
+                <p>&copy; 2024 Physics Legends. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Coze AI Assistant SDK -->
-    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/cn/index.js"></script>
     <script>
         // Generate unique user ID for session isolation
         function generateUserId() {
-            const timestamp = Date.now();
-            const random = Math.random().toString(36).substr(2, 9);
-            return `physics_user_${random}_${timestamp}`;
+            return 'user_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
         }
 
-        // Initialize Coze AI Assistant with session isolation
-        new CozeWebSDK.WebChatClient({
+        // Initialize session with unique user context
+        window.sessionContext = Object.freeze({
+            // Session configuration
             config: {
-                bot_id: '7557611266525741071',
-            },
-            componentProps: {
-                title: 'Physics AI Assistant',
-            },
-            auth: {
-                type: 'token',
-                token: 'pat_mJAsZjekOF8iW8w3B0fKLqdq5SkWvB7sBzfpeSapwn2V0rMv5BTEo4zXBcz6ZPJI',
-                onRefreshToken: function () {
-                    return 'pat_mJAsZjekOF8iW8w3B0fKLqdq5SkWvB7sBzfpeSapwn2V0rMv5BTEo4zXBcz6ZPJI'
-                }
+                enableAnimations: true,
+                enableSounds: false,
+                theme: 'light',
+                language: 'en'
             },
             // Add user information for session isolation
             userInfo: {
@@ -397,6 +368,8 @@
         console.log('? Session isolation enabled with unique user ID');
     </script>
     
+    <!-- Load knowledge base first, then script.js -->
+    <script src="knowledge-base.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

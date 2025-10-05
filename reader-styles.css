@@ -1,0 +1,369 @@
+/* PDF Reader Styles */
+.reader-header {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.back-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    transition: background-color 0.3s;
+}
+
+.back-btn:hover {
+    background: #5a67d8;
+}
+
+.book-info h2 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #1f2937;
+}
+
+.book-info span {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.header-right .reader-controls {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.reader-controls button {
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+}
+
+.reader-controls button:hover {
+    background: #e5e7eb;
+}
+
+.reader-container {
+    display: flex;
+    height: calc(100vh - 80px);
+}
+
+.reader-sidebar {
+    width: 300px;
+    background: #f9fafb;
+    border-right: 1px solid #e5e7eb;
+    overflow-y: auto;
+    transition: transform 0.3s;
+}
+
+.reader-sidebar.hidden {
+    transform: translateX(-100%);
+}
+
+.sidebar-header {
+    padding: 1rem;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #374151;
+}
+
+.sidebar-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    font-size: 1.2rem;
+}
+
+.chapters-list {
+    padding: 1rem;
+}
+
+.chapter-item {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.chapter-item:hover {
+    background: #e5e7eb;
+}
+
+.chapter-item.active {
+    background: #667eea;
+    color: white;
+}
+
+.pdf-viewer-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.pdf-toolbar {
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.toolbar-left, .toolbar-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.page-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.page-controls button {
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.page-controls button:hover {
+    background: #e5e7eb;
+}
+
+.page-controls button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.page-info {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+.page-info input {
+    width: 60px;
+    padding: 0.25rem 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.25rem;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+.zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.zoom-controls button {
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    padding: 0.375rem 0.75rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.zoom-controls button:hover {
+    background: #e5e7eb;
+}
+
+#zoomLevel {
+    font-size: 0.9rem;
+    color: #374151;
+    min-width: 50px;
+    text-align: center;
+}
+
+.pdf-viewer {
+    flex: 1;
+    overflow: auto;
+    background: #f3f4f6;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem;
+}
+
+.loading-message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #6b7280;
+}
+
+.loading-message i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.pdf-page {
+    background: white;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.pdf-page canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .reader-header {
+        padding: 0.75rem 1rem;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .reader-sidebar {
+        position: absolute;
+        z-index: 200;
+        height: 100%;
+        transform: translateX(-100%);
+    }
+
+    .reader-sidebar.visible {
+        transform: translateX(0);
+    }
+
+    .pdf-toolbar {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+
+    .toolbar-left, .toolbar-right {
+        justify-content: center;
+    }
+
+    .pdf-viewer {
+        padding: 1rem;
+    }
+}
+
+/* Fullscreen mode */
+.fullscreen .reader-header {
+    display: none;
+}
+
+.fullscreen .reader-container {
+    height: 100vh;
+}
+
+.fullscreen .reader-sidebar {
+    display: none;
+}
+
+.fullscreen .pdf-viewer-container {
+    width: 100%;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .reader-header {
+        background: #1f2937;
+        border-bottom-color: #374151;
+    }
+
+    .book-info h2 {
+        color: #f9fafb;
+    }
+
+    .book-info span {
+        color: #d1d5db;
+    }
+
+    .reader-sidebar {
+        background: #111827;
+        border-right-color: #374151;
+    }
+
+    .sidebar-header h3 {
+        color: #f9fafb;
+    }
+
+    .sidebar-toggle {
+        color: #d1d5db;
+    }
+
+    .chapter-item {
+        color: #f9fafb;
+    }
+
+    .chapter-item:hover {
+        background: #374151;
+    }
+
+    .pdf-toolbar {
+        background: #111827;
+        border-bottom-color: #374151;
+    }
+
+    .page-info {
+        color: #f9fafb;
+    }
+
+    .page-info input {
+        background: #374151;
+        border-color: #4b5563;
+        color: #f9fafb;
+    }
+
+    #zoomLevel {
+        color: #f9fafb;
+    }
+
+    .pdf-viewer {
+        background: #111827;
+    }
+
+    .loading-message {
+        color: #d1d5db;
+    }
+}

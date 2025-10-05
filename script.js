@@ -1,23 +1,235 @@
-// Mobile Navigation Toggle
+// Physics Legends - Main JavaScript File
+
+// Initialize when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    const hamburger = document.querySelector('.hamburger');
-    const navMenu = document.querySelector('.nav-menu');
+    // Initialize animations
+    initAnimations();
     
-    hamburger.addEventListener('click', function() {
-        hamburger.classList.toggle('active');
-        navMenu.classList.toggle('active');
-    });
+    // Initialize statistics counter
+    initStatsCounter();
     
-    // Close mobile menu when clicking on a link
-    document.querySelectorAll('.nav-menu a').forEach(link => {
-        link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navMenu.classList.remove('active');
-        });
-    });
+    // Initialize knowledge base navigation
+    initKnowledgeBase();
+    
+    // Initialize search functionality
+    initSearch();
+    
+    // Initialize knowledge base navigation
+    initKnowledgeBaseNavigation();
 });
 
-// Smooth Scrolling for Navigation Links
+// Animation initialization
+function initAnimations() {
+    // Fade in animation for hero section
+    const hero = document.querySelector('.hero');
+    if (hero) {
+        hero.style.opacity = '0';
+        hero.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            hero.style.transition = 'all 0.8s ease';
+            hero.style.opacity = '1';
+            hero.style.transform = 'translateY(0)';
+        }, 100);
+    }
+    
+    // Staggered animation for feature cards
+    const cards = document.querySelectorAll('.feature-card');
+    cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        
+        setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, 200 + index * 100);
+    });
+}
+
+// Statistics counter animation
+function initStatsCounter() {
+    const stats = document.querySelectorAll('.stat-number');
+    
+    const animateCounter = (element, target) => {
+        let current = 0;
+        const increment = target / 100;
+        const timer = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            element.textContent = Math.floor(current) + (target.toString().includes('+') ? '+' : '');
+        }, 20);
+    };
+    
+    // Intersection Observer for triggering animation when in view
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = parseInt(entry.target.dataset.target);
+                animateCounter(entry.target, target);
+                observer.unobserve(entry.target);
+            }
+        });
+    });
+    
+    stats.forEach(stat => {
+        observer.observe(stat);
+    });
+}
+
+// Initialize knowledge base navigation
+function initKnowledgeBase() {
+    // Initialize knowledge base navigation
+    initKnowledgeBaseNavigation();
+}
+
+// Knowledge base navigation functionality
+function initKnowledgeBaseNavigation() {
+    // Add knowledge base navigation functionality
+    
+    // Add click events for physicist cards
+    const physicistCards = document.querySelectorAll('.physicist-card');
+    physicistCards.forEach(card => {
+        card.addEventListener('click', function() {
+            const physicistName = this.querySelector('h3').textContent;
+            const physicistId = getPhysicistIdByName(physicistName);
+            if (physicistId) {
+                window.location.href = `detail.html?type=physicist&id=${physicistId}`;
+            }
+        });
+    });
+    
+    // Add click events for formulas
+    const formulaItems = document.querySelectorAll('.formula-item');
+    formulaItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const formulaName = this.querySelector('.formula-name').textContent;
+            const formulaId = getFormulaIdByName(formulaName);
+            if (formulaId) {
+                window.location.href = `detail.html?type=formula&id=${formulaId}`;
+            }
+        });
+    });
+}
+
+// Get physicist ID by name
+function getPhysicistIdByName(name) {
+    if (typeof KNOWLEDGE_BASE !== 'undefined') {
+        for (const [id, physicist] of Object.entries(KNOWLEDGE_BASE.physicists)) {
+            if (physicist.name === name) {
+                return id;
+            }
+        }
+    }
+    return null;
+}
+
+// Get formula ID by name
+function getFormulaIdByName(name) {
+    if (typeof KNOWLEDGE_BASE !== 'undefined') {
+        for (const [id, formula] of Object.entries(KNOWLEDGE_BASE.formulas)) {
+            if (formula.name === name) {
+                return id;
+            }
+        }
+    }
+    return null;
+}
+
+// Search functionality
+function initSearch() {
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    
+    if (!searchInput || !searchResults) return;
+    
+    searchInput.addEventListener('input', function() {
+        const query = this.value.toLowerCase().trim();
+        
+        if (query.length < 2) {
+            searchResults.style.display = 'none';
+            return;
+        }
+        
+        const results = performSearch(query);
+        displaySearchResults(results, searchResults);
+    });
+    
+    // Hide search results when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.search-container')) {
+            searchResults.style.display = 'none';
+        }
+    });
+}
+
+function performSearch(query) {
+    const results = [];
+    
+    if (typeof KNOWLEDGE_BASE === 'undefined') return results;
+    
+    // Search physicists
+    Object.entries(KNOWLEDGE_BASE.physicists).forEach(([id, physicist]) => {
+        if (physicist.name.toLowerCase().includes(query) ||
+            physicist.field.toLowerCase().includes(query) ||
+            physicist.biography.toLowerCase().includes(query)) {
+            results.push({
+                type: 'physicist',
+                id: id,
+                title: physicist.name,
+                subtitle: physicist.field,
+                description: physicist.biography.substring(0, 100) + '...'
+            });
+        }
+    });
+    
+    // Search formulas
+    Object.entries(KNOWLEDGE_BASE.formulas).forEach(([id, formula]) => {
+        if (formula.name.toLowerCase().includes(query) ||
+            formula.description.toLowerCase().includes(query) ||
+            formula.field.toLowerCase().includes(query)) {
+            results.push({
+                type: 'formula',
+                id: id,
+                title: formula.name,
+                subtitle: formula.field,
+                description: formula.description
+            });
+        }
+    });
+    
+    return results.slice(0, 8); // Limit to 8 results
+}
+
+function displaySearchResults(results, container) {
+    if (results.length === 0) {
+        container.innerHTML = '<div class="no-results">No results found</div>';
+    } else {
+        container.innerHTML = results.map(result => `
+            <div class="search-result-item" onclick="navigateToResult('${result.type}', '${result.id}')">
+                <div class="result-icon">
+                    <i class="fas ${result.type === 'physicist' ? 'fa-user' : 'fa-calculator'}"></i>
+                </div>
+                <div class="result-content">
+                    <div class="result-title">${result.title}</div>
+                    <div class="result-subtitle">${result.subtitle}</div>
+                    <div class="result-description">${result.description}</div>
+                </div>
+            </div>
+        `).join('');
+    }
+    
+    container.style.display = 'block';
+}
+
+function navigateToResult(type, id) {
+    window.location.href = `detail.html?type=${type}&id=${id}`;
+}
+
+// Smooth scrolling for navigation links
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
@@ -31,214 +243,18 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Navbar Background on Scroll
+// Initialize knowledge base navigation
+initKnowledgeBaseNavigation();
+
+// Navbar scroll effect
 window.addEventListener('scroll', function() {
     const navbar = document.querySelector('.navbar');
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-        navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+    if (window.scrollY > 100) {
+        navbar.classList.add('scrolled');
     } else {
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        navbar.style.boxShadow = 'none';
+        navbar.classList.remove('scrolled');
     }
 });
 
-// Intersection Observer for Animations
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const observer = new IntersectionObserver(function(entries) {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, observerOptions);
-
-// Observe elements for animation
-document.addEventListener('DOMContentLoaded', function() {
-    const animatedElements = document.querySelectorAll('.physicist-card, .timeline-item, .discovery-card');
-    
-    animatedElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
-    });
-});
-
-// Physicist Card Interactions
-document.querySelectorAll('.physicist-card').forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-10px) scale(1.02)';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-    });
-    
-    // Click to show more info (placeholder for future functionality)
-    card.addEventListener('click', function() {
-        const name = this.querySelector('h3').textContent;
-        console.log(`Clicked on ${name} - Future: Show detailed biography`);
-    });
-});
-
-// Physics Equations Animation
-document.addEventListener('DOMContentLoaded', function() {
-    const equations = document.querySelectorAll('.equation');
-    
-    equations.forEach((equation, index) => {
-        equation.addEventListener('mouseenter', function() {
-            this.style.transform = 'scale(1.1) rotate(2deg)';
-            this.style.boxShadow = '0 10px 25px rgba(37, 99, 235, 0.3)';
-        });
-        
-        equation.addEventListener('mouseleave', function() {
-            this.style.transform = 'scale(1) rotate(0deg)';
-            this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
-        });
-    });
-});
-
-// Timeline Animation
-function animateTimeline() {
-    const timelineItems = document.querySelectorAll('.timeline-item');
-    
-    timelineItems.forEach((item, index) => {
-        setTimeout(() => {
-            item.style.opacity = '1';
-            item.style.transform = 'translateX(0)';
-        }, index * 200);
-    });
-}
-
-// Trigger timeline animation when section is visible
-const timelineObserver = new IntersectionObserver(function(entries) {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            animateTimeline();
-            timelineObserver.unobserve(entry.target);
-        }
-    });
-}, { threshold: 0.3 });
-
-document.addEventListener('DOMContentLoaded', function() {
-    const timelineSection = document.querySelector('.timeline-section');
-    if (timelineSection) {
-        timelineObserver.observe(timelineSection);
-    }
-});
-
-// Stats Counter Animation
-function animateStats() {
-    const stats = document.querySelectorAll('.stat-number');
-    
-    stats.forEach(stat => {
-        const target = stat.textContent;
-        if (target === '¡Þ') return; // Skip infinity symbol
-        
-        const targetNumber = parseInt(target.replace('+', ''));
-        let current = 0;
-        const increment = targetNumber / 50;
-        
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= targetNumber) {
-                stat.textContent = target;
-                clearInterval(timer);
-            } else {
-                stat.textContent = Math.floor(current) + (target.includes('+') ? '+' : '');
-            }
-        }, 50);
-    });
-}
-
-// Trigger stats animation when about section is visible
-const statsObserver = new IntersectionObserver(function(entries) {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            animateStats();
-            statsObserver.unobserve(entry.target);
-        }
-    });
-}, { threshold: 0.5 });
-
-document.addEventListener('DOMContentLoaded', function() {
-    const aboutSection = document.querySelector('.about-section');
-    if (aboutSection) {
-        statsObserver.observe(aboutSection);
-    }
-});
-
-// Particle Background Effect (Optional Enhancement)
-function createParticles() {
-    const hero = document.querySelector('.hero');
-    const particleCount = 50;
-    
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.cssText = `
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            pointer-events: none;
-            animation: float ${Math.random() * 3 + 2}s ease-in-out infinite;
-            left: ${Math.random() * 100}%;
-            top: ${Math.random() * 100}%;
-            animation-delay: ${Math.random() * 2}s;
-        `;
-        hero.appendChild(particle);
-    }
-}
-
-// Initialize particles on load
-document.addEventListener('DOMContentLoaded', createParticles);
-
-// Search Functionality (Future Enhancement)
-function initializeSearch() {
-    // Placeholder for search functionality
-    console.log('Search functionality ready for implementation');
-}
-
-// Filter Physicists by Field (Future Enhancement)
-function filterPhysicists(field) {
-    const cards = document.querySelectorAll('.physicist-card');
-    
-    cards.forEach(card => {
-        if (field === 'all' || card.dataset.field === field) {
-            card.style.display = 'block';
-        } else {
-            card.style.display = 'none';
-        }
-    });
-}
-
-// Keyboard Navigation
-document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') {
-        // Close mobile menu if open
-        const hamburger = document.querySelector('.hamburger');
-        const navMenu = document.querySelector('.nav-menu');
-        hamburger.classList.remove('active');
-        navMenu.classList.remove('active');
-    }
-});
-
-// Print Styles Handler
-window.addEventListener('beforeprint', function() {
-    document.body.classList.add('printing');
-});
-
-window.addEventListener('afterprint', function() {
-    document.body.classList.remove('printing');
-});
-
-console.log('? Physics Legends website loaded successfully!');
-console.log('? Interactive features initialized');
+// Initialize knowledge base navigation
+initKnowledgeBaseNavigation();
