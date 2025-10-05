@@ -363,20 +363,108 @@
     <!-- Coze AI Assistant SDK -->
     <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/cn/index.js"></script>
     <script>
-        // Generate unique user ID for session isolation
-        function generateUserId() {
-            const timestamp = Date.now();
-            const random = Math.random().toString(36).substr(2, 9);
-            return `physics_user_${random}_${timestamp}`;
+        // 历史记录管理器
+        class ChatHistoryManager {
+            constructor() {
+                this.storageKey = 'physics_ai_chat_history';
+                this.userIdKey = 'physics_ai_user_id';
+                this.maxHistoryLength = 50; // 最多保存50条对话
+            }
+
+            // 获取或创建持久化用户ID
+            getOrCreateUserId() {
+                let userId = localStorage.getItem(this.userIdKey);
+                if (!userId) {
+                    const timestamp = Date.now();
+                    const random = Math.random().toString(36).substr(2, 9);
+                    userId = `physics_user_${random}_${timestamp}`;
+                    localStorage.setItem(this.userIdKey, userId);
+                    console.log('? Created new user ID:', userId);
+                } else {
+                    console.log('? Using existing user ID:', userId);
+                }
+                return userId;
+            }
+
+            // 保存对话记录
+            saveMessage(message, role, timestamp = null) {
+                try {
+                    const history = this.getHistory();
+                    const messageData = {
+                        content: message,
+                        role: role,
+                        timestamp: timestamp || new Date().toISOString(),
+                        id: Date.now() + Math.random()
+                    };
+                    
+                    history.push(messageData);
+                    
+                    // 限制历史记录长度
+                    if (history.length > this.maxHistoryLength) {
+                        history.splice(0, history.length - this.maxHistoryLength);
+                    }
+                    
+                    localStorage.setItem(this.storageKey, JSON.stringify(history));
+                    console.log('? Message saved to history:', messageData);
+                } catch (error) {
+                    console.error('? Failed to save message:', error);
+                }
+            }
+
+            // 获取历史记录
+            getHistory() {
+                try {
+                    const history = localStorage.getItem(this.storageKey);
+                    return history ? JSON.parse(history) : [];
+                } catch (error) {
+                    console.error('? Failed to load history:', error);
+                    return [];
+                }
+            }
+
+            // 清除历史记录
+            clearHistory() {
+                localStorage.removeItem(this.storageKey);
+                console.log('?? Chat history cleared');
+            }
+
+            // 获取历史记录统计
+            getHistoryStats() {
+                const history = this.getHistory();
+                return {
+                    totalMessages: history.length,
+                    userMessages: history.filter(msg => msg.role === 'user').length,
+                    assistantMessages: history.filter(msg => msg.role === 'assistant').length,
+                    oldestMessage: history.length > 0 ? history[0].timestamp : null,
+                    newestMessage: history.length > 0 ? history[history.length - 1].timestamp : null
+                };
+            }
         }
 
-        // Initialize Coze AI Assistant with session isolation
-        new CozeWebSDK.WebChatClient({
+        // 初始化历史记录管理器
+        const historyManager = new ChatHistoryManager();
+        const persistentUserId = historyManager.getOrCreateUserId();
+
+        // 显示历史记录统计
+        const stats = historyManager.getHistoryStats();
+        if (stats.totalMessages > 0) {
+            console.log('? Chat History Stats:', stats);
+            console.log(`? Found ${stats.totalMessages} previous messages`);
+        }
+
+        // Initialize Coze AI Assistant with persistent session and history
+        const chatClient = new CozeWebSDK.WebChatClient({
             config: {
                 bot_id: '7557611266525741071',
+                // 启用对话历史
+                enableHistory: true,
+                // 设置最大历史长度
+                maxHistoryLength: 50
             },
             componentProps: {
-                title: 'Physics AI Assistant',
+                title: 'Physics AI Assistant ?',
+                // 添加历史记录提示
+                placeholder: '问我任何物理问题... (对话历史会自动保存)',
             },
             auth: {
                 type: 'token',
@@ -385,16 +473,52 @@
                     return 'pat_mJAsZjekOF8iW8w3B0fKLqdq5SkWvB7sBzfpeSapwn2V0rMv5BTEo4zXBcz6ZPJI'
                 }
             },
-            // Add user information for session isolation
+            // 使用持久化用户ID
             userInfo: {
-                id: generateUserId(),
+                id: persistentUserId,
                 name: 'Physics Explorer',
                 avatar: 'https://via.placeholder.com/40x40/667eea/ffffff?text=PE'
+            },
+            // 添加事件监听器来保存历史记录
+            onMessage: function(message) {
+                // 保存用户消息
+                if (message.role === 'user') {
+                    historyManager.saveMessage(message.content, 'user');
+                }
+            },
+            onResponse: function(response) {
+                // 保存AI回复
+                if (response.content) {
+                    historyManager.saveMessage(response.content, 'assistant');
+                }
             }
         });
 
+        // 添加清除历史记录的全局函数（可在控制台调用）
+        window.clearChatHistory = function() {
+            if (confirm('确定要清除所有聊天历史记录吗？此操作不可撤销。')) {
+                historyManager.clearHistory();
+                alert('? 聊天历史记录已清除！刷新页面生效。');
+            }
+        };
+
+        // 添加查看历史记录统计的全局函数
+        window.showChatStats = function() {
+            const stats = historyManager.getHistoryStats();
+            console.log('? 详细聊天统计:', stats);
+            alert(`? 聊天统计信息：
+            
+总消息数: ${stats.totalMessages}
+用户消息: ${stats.userMessages}
+AI回复: ${stats.assistantMessages}
+最早消息: ${stats.oldestMessage ? new Date(stats.oldestMessage).toLocaleString() : '无'}
+最新消息: ${stats.newestMessage ? new Date(stats.newestMessage).toLocaleString() : '无'}`);
+        };
+
         // Log session info for debugging
-        console.log('? Session isolation enabled with unique user ID');
+        console.log('? Session isolation enabled with persistent user ID');
+        console.log('? Chat history persistence enabled');
+        console.log('?? Available commands: clearChatHistory(), showChatStats()');
     </script>
     
     <script src="script.js"></script>
