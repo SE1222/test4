@@ -363,7 +363,14 @@
     <!-- Coze AI Assistant SDK -->
     <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/cn/index.js"></script>
     <script>
-        // Initialize Coze AI Assistant
+        // Generate unique user ID for session isolation
+        function generateUserId() {
+            const timestamp = Date.now();
+            const random = Math.random().toString(36).substr(2, 9);
+            return `physics_user_${random}_${timestamp}`;
+        }
+
+        // Initialize Coze AI Assistant with session isolation
         new CozeWebSDK.WebChatClient({
             config: {
                 bot_id: '7557611266525741071',
@@ -377,8 +384,17 @@
                 onRefreshToken: function () {
                     return 'pat_mJAsZjekOF8iW8w3B0fKLqdq5SkWvB7sBzfpeSapwn2V0rMv5BTEo4zXBcz6ZPJI'
                 }
+            },
+            // Add user information for session isolation
+            userInfo: {
+                id: generateUserId(),
+                name: 'Physics Explorer',
+                avatar: 'https://via.placeholder.com/40x40/667eea/ffffff?text=PE'
             }
         });
+
+        // Log session info for debugging
+        console.log('? Session isolation enabled with unique user ID');
     </script>
     
     <script src="script.js"></script>
