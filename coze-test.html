@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coze智能体测试 - Physics Legends</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        .status {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin: 1rem 0;
+        }
+        .success {
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        .error {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>? Coze智能体测试</h1>
+        <p>测试Physics Legends网站的Coze智能体集成</p>
+        
+        <div id="status" class="status">
+            正在加载Coze SDK...
+        </div>
+        
+        <div class="status">
+            <h3>功能说明</h3>
+            <ul style="text-align: left; max-width: 500px; margin: 0 auto;">
+                <li>智能体ID: 7557611266525741071</li>
+                <li>支持物理学相关问题解答</li>
+                <li>集成到所有主要页面</li>
+                <li>中文界面，友好交互</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Coze Web SDK -->
+    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/cn/index.js"></script>
+    <script>
+        const statusDiv = document.getElementById('status');
+        
+        try {
+            // Check if CozeWebSDK is loaded
+            if (typeof CozeWebSDK !== 'undefined') {
+                statusDiv.innerHTML = '? Coze SDK 加载成功！正在初始化智能体...';
+                statusDiv.className = 'status success';
+                
+                // Initialize Coze Web Chat Client
+                new CozeWebSDK.WebChatClient({
+                    config: {
+                        bot_id: '7557611266525741071',
+                    },
+                    componentProps: {
+                        title: 'Physics AI Assistant ?',
+                        placeholder: '你好！我是物理学AI助手，问我任何物理问题吧...',
+                        width: '450px',
+                        height: '650px'
+                    },
+                    auth: {
+                        type: 'token',
+                        token: 'pat_mJAsZjekOF8iW8w3B0fKLqdq5SkWvB7sBzfpeSapwn2V0rMv5BTEo4zXBcz6ZPJI',
+                        onRefreshToken: function () {
+                            return 'pat_mJAsZjekOF8iW8w3B0fKLqdq5SkWvB7sBzfpeSapwn2V0rMv5BTEo4zXBcz6ZPJI'
+                        }
+                    }
+                });
+                
+                setTimeout(() => {
+                    statusDiv.innerHTML = '? Coze智能体初始化完成！<br>你应该能看到右下角的聊天窗口。';
+                }, 1000);
+                
+            } else {
+                throw new Error('CozeWebSDK not loaded');
+            }
+        } catch (error) {
+            console.error('Coze initialization error:', error);
+            statusDiv.innerHTML = '? Coze SDK 加载失败: ' + error.message;
+            statusDiv.className = 'status error';
+        }
+    </script>
+</body>
+</html>

@@ -341,6 +341,30 @@
         });
     </script>
 
+    <!-- Coze Web SDK -->
+    <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/cn/index.js"></script>
+    <script>
+        // Initialize Coze Web Chat Client for PDF Reader
+        new CozeWebSDK.WebChatClient({
+            config: {
+                bot_id: '7557611266525741071',
+            },
+            componentProps: {
+                title: 'Physics Reading Assistant',
+                placeholder: '询问关于当前教材内容的问题...',
+                width: '400px',
+                height: '600px'
+            },
+            auth: {
+                type: 'token',
+                token: 'pat_mJAsZjekOF8iW8w3B0fKLqdq5SkWvB7sBzfpeSapwn2V0rMv5BTEo4zXBcz6ZPJI',
+                onRefreshToken: function () {
+                    return 'pat_mJAsZjekOF8iW8w3B0fKLqdq5SkWvB7sBzfpeSapwn2V0rMv5BTEo4zXBcz6ZPJI'
+                }
+            }
+        });
+    </script>
+
     <style>
         .pdf-not-available {
             display: flex;

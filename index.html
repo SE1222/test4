@@ -2,10 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Physics Legends - Explore the Greatest Minds in Physics</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -18,19 +15,14 @@
             <div class="nav-logo">
                 <a href="index.html">&#128300; Physics Legends</a>
             </div>
-            <div class="nav-menu" id="navMenu">
+            <div class="nav-menu">
                 <a href="index.html" class="nav-link active">Home</a>
                 <a href="textbooks.html" class="nav-link">Textbooks</a>
                 <a href="#" class="nav-link">Upload</a>
                 <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Search physicists..." autocomplete="off">
+                    <input type="text" id="searchInput" placeholder="Search physicists...">
                     <div id="searchResults" class="search-results"></div>
                 </div>
-            </div>
-            <div class="hamburger" id="hamburger">
-                <span></span>
-                <span></span>
-                <span></span>
             </div>
         </div>
     </nav>
@@ -379,24 +371,29 @@
     <!-- Load knowledge base first, then script.js -->
     <script src="knowledge-base.js"></script>
     <script src="script.js"></script>
-    <!-- Coze Web SDK Chat Integration -->
+    
+    <!-- Coze Web SDK -->
     <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/cn/index.js"></script>
     <script>
-      new CozeWebSDK.WebChatClient({
-        config: {
-          bot_id: '7557611266525741071',
-        },
-        componentProps: {
-          title: 'Coze',
-        },
-        auth: {
-          type: 'token',
-          token: 'pat_mJAsZjekOF8iW8w3B0fKLqdq5SkWvB7sBzfpeSapwn2V0rMv5BTEo4zXBcz6ZPJI',
-          onRefreshToken: function () {
-            return 'pat_mJAsZjekOF8iW8w3B0fKLqdq5SkWvB7sBzfpeSapwn2V0rMv5BTEo4zXBcz6ZPJI';
-          }
-        }
-      });
+        // Initialize Coze Web Chat Client
+        new CozeWebSDK.WebChatClient({
+            config: {
+                bot_id: '7557611266525741071',
+            },
+            componentProps: {
+                title: 'Physics AI Assistant',
+                placeholder: '问我任何关于物理学的问题...',
+                width: '400px',
+                height: '600px'
+            },
+            auth: {
+                type: 'token',
+                token: 'pat_mJAsZjekOF8iW8w3B0fKLqdq5SkWvB7sBzfpeSapwn2V0rMv5BTEo4zXBcz6ZPJI',
+                onRefreshToken: function () {
+                    return 'pat_mJAsZjekOF8iW8w3B0fKLqdq5SkWvB7sBzfpeSapwn2V0rMv5BTEo4zXBcz6ZPJI'
+                }
+            }
+        });
     </script>
 </body>
 </html>
