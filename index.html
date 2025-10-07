@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>Physics Legends - Explore the Greatest Minds in Physics</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -15,14 +18,19 @@
             <div class="nav-logo">
                 <a href="index.html">&#128300; Physics Legends</a>
             </div>
-            <div class="nav-menu">
+            <div class="nav-menu" id="navMenu">
                 <a href="index.html" class="nav-link active">Home</a>
                 <a href="textbooks.html" class="nav-link">Textbooks</a>
                 <a href="#" class="nav-link">Upload</a>
                 <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Search physicists...">
+                    <input type="text" id="searchInput" placeholder="Search physicists..." autocomplete="off">
                     <div id="searchResults" class="search-results"></div>
                 </div>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
     </nav>

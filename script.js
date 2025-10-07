@@ -16,6 +16,83 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Initialize knowledge base navigation
     initKnowledgeBaseNavigation();
+    
+    // Mobile Navigation
+    const hamburger = document.getElementById('hamburger');
+    const navMenu = document.getElementById('navMenu');
+    
+    if (hamburger && navMenu) {
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+            
+            // Prevent body scroll when menu is open
+            if (navMenu.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+
+        // Close menu when clicking on a link
+        const navLinks = navMenu.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!hamburger.contains(event.target) && !navMenu.contains(event.target)) {
+                hamburger.classList.remove('active');
+                navMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
+
+    // Touch-friendly search
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+    
+    if (searchInput && searchResults) {
+        // Improve touch interaction for search
+        searchInput.addEventListener('focus', function() {
+            this.style.fontSize = '16px'; // Prevent zoom on iOS
+        });
+
+        searchInput.addEventListener('blur', function() {
+            setTimeout(() => {
+                searchResults.style.display = 'none';
+            }, 200);
+        });
+    }
+
+    // Optimize for mobile performance
+    let ticking = false;
+    function updateOnScroll() {
+        // Add scroll-based optimizations here
+        ticking = false;
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(updateOnScroll);
+            ticking = true;
+        }
+    }
+
+    window.addEventListener('scroll', requestTick);
+
+    // Handle orientation change
+    window.addEventListener('orientationchange', function() {
+        setTimeout(function() {
+            window.scrollTo(0, window.scrollY);
+        }, 100);
+    });
 });
 
 // Animation initialization
@@ -229,22 +306,7 @@ function navigateToResult(type, id) {
     window.location.href = `detail.html?type=${type}&id=${id}`;
 }
 
-// Smooth scrolling for navigation links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    });
-});
 
-// Initialize knowledge base navigation
-initKnowledgeBaseNavigation();
 
 // Navbar scroll effect
 window.addEventListener('scroll', function() {
@@ -255,6 +317,3 @@ window.addEventListener('scroll', function() {
         navbar.classList.remove('scrolled');
     }
 });
-
-// Initialize knowledge base navigation
-initKnowledgeBaseNavigation();
