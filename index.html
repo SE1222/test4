@@ -375,16 +375,18 @@
     <!-- Coze Web SDK -->
     <script src="https://lf-cdn.coze.cn/obj/unpkg/flow-platform/chat-app-sdk/1.2.0-beta.10/libs/cn/index.js"></script>
     <script>
-        // Initialize Coze Web Chat Client
-        new CozeWebSDK.WebChatClient({
+        // 检测设备类型和屏幕大小
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isSmallScreen = window.innerWidth <= 768;
+        
+        // 移动端优化的Coze配置
+        let cozeConfig = {
             config: {
                 bot_id: '7557611266525741071',
             },
             componentProps: {
                 title: 'Physics AI Assistant',
-                placeholder: '问我任何关于物理学的问题...',
-                width: '400px',
-                height: '600px'
+                placeholder: '询问任何物理学问题...',
             },
             auth: {
                 type: 'token',
@@ -393,7 +395,20 @@
                     return 'pat_mJAsZjekOF8iW8w3B0fKLqdq5SkWvB7sBzfpeSapwn2V0rMv5BTEo4zXBcz6ZPJI'
                 }
             }
-        });
+        };
+        
+        // 根据设备调整聊天窗口大小
+        if (isMobile || isSmallScreen) {
+            cozeConfig.componentProps.width = '95vw';
+            cozeConfig.componentProps.height = '70vh';
+            cozeConfig.componentProps.title = 'Physics AI';
+        } else {
+            cozeConfig.componentProps.width = '400px';
+            cozeConfig.componentProps.height = '600px';
+        }
+        
+        // Initialize Coze Web Chat Client
+        new CozeWebSDK.WebChatClient(cozeConfig);
     </script>
 </body>
 </html>

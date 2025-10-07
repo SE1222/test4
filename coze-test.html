@@ -17,6 +17,7 @@
             max-width: 800px;
             margin: 0 auto;
             text-align: center;
+            padding: 0 10px;
         }
         h1 {
             font-size: 2.5rem;
@@ -41,6 +42,39 @@
             background: rgba(239, 68, 68, 0.2);
             border: 1px solid rgba(239, 68, 68, 0.3);
         }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            h1 {
+                font-size: 2rem;
+            }
+            p {
+                font-size: 1rem;
+            }
+            .container {
+                padding: 0 5px;
+            }
+            .status {
+                padding: 0.8rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            p {
+                font-size: 0.9rem;
+            }
+            .status {
+                padding: 0.6rem;
+                font-size: 0.8rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -59,7 +93,18 @@
                 <li>支持物理学相关问题解答</li>
                 <li>集成到所有主要页面</li>
                 <li>中文界面，友好交互</li>
+                <li>? 支持手机端访问</li>
             </ul>
+        </div>
+        
+        <div class="status">
+            <h3>? 移动端使用提示</h3>
+            <p style="font-size: 0.9rem; text-align: left; max-width: 500px; margin: 0 auto;">
+                ? 聊天窗口会自动适配屏幕大小<br>
+                ? 在手机上点击右下角的聊天图标<br>
+                ? 支持触摸滑动和缩放<br>
+                ? GitHub Pages完全兼容
+            </p>
         </div>
     </div>
 
@@ -68,22 +113,24 @@
     <script>
         const statusDiv = document.getElementById('status');
         
+        // 检测设备类型
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        const isSmallScreen = window.innerWidth <= 768;
+        
         try {
             // Check if CozeWebSDK is loaded
             if (typeof CozeWebSDK !== 'undefined') {
                 statusDiv.innerHTML = '? Coze SDK 加载成功！正在初始化智能体...';
                 statusDiv.className = 'status success';
                 
-                // Initialize Coze Web Chat Client
-                new CozeWebSDK.WebChatClient({
+                // 根据设备类型调整聊天窗口大小
+                let chatConfig = {
                     config: {
                         bot_id: '7557611266525741071',
                     },
                     componentProps: {
                         title: 'Physics AI Assistant ?',
                         placeholder: '你好！我是物理学AI助手，问我任何物理问题吧...',
-                        width: '450px',
-                        height: '650px'
                     },
                     auth: {
                         type: 'token',
@@ -92,10 +139,24 @@
                             return 'pat_mJAsZjekOF8iW8w3B0fKLqdq5SkWvB7sBzfpeSapwn2V0rMv5BTEo4zXBcz6ZPJI'
                         }
                     }
-                });
+                };
+                
+                // 移动端优化配置
+                if (isMobile || isSmallScreen) {
+                    chatConfig.componentProps.width = '95vw';
+                    chatConfig.componentProps.height = '70vh';
+                    chatConfig.componentProps.title = 'Physics AI ?';
+                } else {
+                    chatConfig.componentProps.width = '450px';
+                    chatConfig.componentProps.height = '650px';
+                }
+                
+                // Initialize Coze Web Chat Client
+                new CozeWebSDK.WebChatClient(chatConfig);
                 
                 setTimeout(() => {
-                    statusDiv.innerHTML = '? Coze智能体初始化完成！<br>你应该能看到右下角的聊天窗口。';
+                    const deviceInfo = isMobile ? '? 移动端' : '? 桌面端';
+                    statusDiv.innerHTML = `? Coze智能体初始化完成！(${deviceInfo})<br>你应该能看到右下角的聊天窗口。`;
                 }, 1000);
                 
             } else {
@@ -106,6 +167,15 @@
             statusDiv.innerHTML = '? Coze SDK 加载失败: ' + error.message;
             statusDiv.className = 'status error';
         }
+        
+        // 监听屏幕旋转和大小变化
+        window.addEventListener('resize', function() {
+            console.log('Screen size changed:', window.innerWidth + 'x' + window.innerHeight);
+        });
+        
+        window.addEventListener('orientationchange', function() {
+            console.log('Orientation changed');
+        });
     </script>
 </body>
 </html>
